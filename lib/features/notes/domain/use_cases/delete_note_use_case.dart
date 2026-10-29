@@ -1,8 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data/data_sources/notes_local_data_source.dart';
-import '../../data/repositories/note_repository_impl.dart';
-import '../repositories/note_repository.dart';
+import '../../../../mini_notes.dart';
 
 class DeleteNoteUseCase {
   final NoteRepository _repository;

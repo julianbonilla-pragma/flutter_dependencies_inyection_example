@@ -1,6 +1,4 @@
-import '../../domain/models/note_model.dart';
-import '../../domain/repositories/note_repository.dart';
-import '../data_sources/notes_local_data_source.dart';
+import '../../../../mini_notes.dart';
 
 class NoteRepositoryImpl implements NoteRepository {
   final NotesLocalDataSource _localDataSource;

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../domain/models/note_model.dart';
-import 'notes_presenter.dart';
+import '../../../../mini_notes.dart';
 
 class NotesPage extends StatefulWidget {
   final SharedPreferences preferences;

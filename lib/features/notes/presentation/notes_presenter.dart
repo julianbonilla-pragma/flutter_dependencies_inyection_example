@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../domain/models/note_model.dart';
-import '../domain/use_cases/add_note_use_case.dart';
-import '../domain/use_cases/delete_note_use_case.dart';
-import '../domain/use_cases/list_notes_use_case.dart';
+import '../../../../mini_notes.dart';
 
 class NotesPresenter extends ChangeNotifier {
   final ListNotesUseCase _listNotes;

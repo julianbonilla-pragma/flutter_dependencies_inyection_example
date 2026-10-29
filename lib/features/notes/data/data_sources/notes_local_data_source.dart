@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../domain/models/note_model.dart';
+import '../../../../mini_notes.dart';
 
 class NotesLocalDataSource {
   static const _storageKey = 'mini_notes';
