@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'di/dependencies.dart';
 import 'features/notes/presentation/notes_page.dart';
+import 'features/notes/presentation/notes_presenter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,12 +16,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late Future<SharedPreferences> _preferences;
+  late Future<NotesPresenter> _presenter;
 
   @override
   void initState() {
     super.initState();
-    _preferences = SharedPreferences.getInstance();
+    _presenter = _initializePresenter();
   }
 
   @override
@@ -30,8 +31,8 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: FutureBuilder<SharedPreferences>(
-        future: _preferences,
+      home: FutureBuilder<NotesPresenter>(
+        future: _presenter,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Scaffold(
@@ -46,7 +47,7 @@ class _MyAppState extends State<MyApp> {
                     TextButton(
                       onPressed: () {
                         setState(() {
-                          _preferences = SharedPreferences.getInstance();
+                          _presenter = _initializePresenter();
                         });
                       },
                       child: const Text('Reintentar'),
@@ -61,9 +62,14 @@ class _MyAppState extends State<MyApp> {
               body: Center(child: CircularProgressIndicator()),
             );
           }
-          return NotesPage(preferences: snapshot.requireData);
+          return NotesPage(presenter: snapshot.requireData);
         },
       ),
     );
+  }
+
+  Future<NotesPresenter> _initializePresenter() async {
+    await configureDependencies();
+    return getIt<NotesPresenter>();
   }
 }

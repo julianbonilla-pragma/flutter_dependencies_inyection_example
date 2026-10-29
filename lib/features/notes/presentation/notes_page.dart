@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../mini_notes.dart';
 
 class NotesPage extends StatefulWidget {
-  final SharedPreferences preferences;
+  final NotesPresenter presenter;
 
-  const NotesPage({super.key, required this.preferences});
+  const NotesPage({super.key, required this.presenter});
 
   @override
   State<NotesPage> createState() => _NotesPageState();
@@ -15,17 +14,15 @@ class NotesPage extends StatefulWidget {
 class _NotesPageState extends State<NotesPage> {
   final _formKey = GlobalKey<FormState>();
   final _textController = TextEditingController();
-  late final NotesPresenter _presenter;
 
   @override
   void initState() {
     super.initState();
-    _presenter = NotesPresenter(widget.preferences);
-    _presenter.loadNotes();
+    widget.presenter.loadNotes();
   }
 
   Future<void> _saveNote() async {
-    if (_presenter.isLoading || !_formKey.currentState!.validate()) {
+    if (widget.presenter.isLoading || !_formKey.currentState!.validate()) {
       return;
     }
 
@@ -33,7 +30,7 @@ class _NotesPageState extends State<NotesPage> {
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       text: _textController.text.trim(),
     );
-    final bool saved = await _presenter.addNote(note);
+    final bool saved = await widget.presenter.addNote(note);
     if (mounted && saved) {
       _textController.clear();
     }
@@ -41,7 +38,7 @@ class _NotesPageState extends State<NotesPage> {
 
   @override
   void dispose() {
-    _presenter.dispose();
+    widget.presenter.dispose();
     _textController.dispose();
     super.dispose();
   }
@@ -52,11 +49,11 @@ class _NotesPageState extends State<NotesPage> {
       appBar: AppBar(title: const Text('MiniNotas')),
       body: SafeArea(
         child: ListenableBuilder(
-          listenable: _presenter,
+          listenable: widget.presenter,
           builder: (context, child) {
-            final notes = _presenter.notes;
-            final isLoading = _presenter.isLoading;
-            final errorMessage = _presenter.errorMessage;
+            final notes = widget.presenter.notes;
+            final isLoading = widget.presenter.isLoading;
+            final errorMessage = widget.presenter.errorMessage;
 
             return Padding(
               padding: const EdgeInsets.all(16),
@@ -106,7 +103,9 @@ class _NotesPageState extends State<NotesPage> {
                             ),
                           ),
                           TextButton(
-                            onPressed: isLoading ? null : _presenter.loadNotes,
+                            onPressed: isLoading
+                                ? null
+                                : widget.presenter.loadNotes,
                             child: const Text('Reintentar carga'),
                           ),
                         ],
@@ -135,7 +134,9 @@ class _NotesPageState extends State<NotesPage> {
                                   tooltip: 'Eliminar nota',
                                   onPressed: isLoading
                                       ? null
-                                      : () => _presenter.deleteNote(note.id),
+                                      : () => widget.presenter.deleteNote(
+                                          note.id,
+                                        ),
                                   icon: const Icon(Icons.delete_outline),
                                 ),
                               );

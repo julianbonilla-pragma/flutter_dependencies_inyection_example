@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../mini_notes.dart';
 
@@ -15,10 +14,7 @@ class NotesPresenter extends ChangeNotifier {
   String? _errorMessage;
   bool _isDisposed = false;
 
-  NotesPresenter(SharedPreferences preferences)
-    : _listNotes = ListNotesUseCase(preferences),
-      _addNote = AddNoteUseCase(preferences),
-      _deleteNote = DeleteNoteUseCase(preferences);
+  NotesPresenter(this._listNotes, this._addNote, this._deleteNote);
 
   List<NoteModel> get notes => List.unmodifiable(_notes);
   bool get isLoading => _isLoading;
