@@ -122,15 +122,15 @@ NotesPresenter
       SharedPreferences
 ```
 
-| Componente | Responsabilidad actual |
-|---|---|
-| `NotesPage` | Renderizar la interfaz, validar el formulario y generar el identificador de la nota. |
-| `NotesPresenter` | Coordinar operaciones y publicar notas, carga y errores mediante `ChangeNotifier`. |
-| Casos de uso | Invocar las operaciones del repositorio. |
-| `NoteRepository` | Definir el contrato de listado, registro y eliminación. |
-| `NoteRepositoryImpl` | Implementar el contrato delegando al datasource. |
-| `NotesLocalDataSource` | Leer, validar y escribir los datos persistidos. |
-| `NoteModel` | Convertir mapas JSON y ofrecer conversiones hacia y desde `Note`. |
+| Componente             | Responsabilidad actual                                                               |
+| ---------------------- | ------------------------------------------------------------------------------------ |
+| `NotesPage`            | Renderizar la interfaz, validar el formulario y generar el identificador de la nota. |
+| `NotesPresenter`       | Coordinar operaciones y publicar notas, carga y errores mediante `ChangeNotifier`.   |
+| Casos de uso           | Invocar las operaciones del repositorio.                                             |
+| `NoteRepository`       | Definir el contrato de listado, registro y eliminación.                              |
+| `NoteRepositoryImpl`   | Implementar el contrato delegando al datasource.                                     |
+| `NotesLocalDataSource` | Leer, validar y escribir los datos persistidos.                                      |
+| `NoteModel`            | Convertir mapas JSON y ofrecer conversiones hacia y desde `Note`.                    |
 
 ### Separación por capas, todavía no Clean Architecture completa
 
@@ -184,11 +184,11 @@ ni una opción para guardar información sensible o crítica.
 
 Registros propuestos para la sesión:
 
-| Dependencia | Registro |
-|---|---|
-| `SharedPreferences` inicializado | `registerSingleton` |
-| Datasource y repositorio | `registerLazySingleton` |
-| Casos de uso y presenter | `registerFactory` |
+| Dependencia                      | Registro                |
+| -------------------------------- | ----------------------- |
+| `SharedPreferences` inicializado | `registerSingleton`     |
+| Datasource y repositorio         | `registerLazySingleton` |
+| Casos de uso y presenter         | `registerFactory`       |
 
 Mantener las llamadas a `getIt` en el punto de composición: el presenter, los
 casos de uso y el repositorio deben recibir sus dependencias, no buscarlas en el
@@ -197,8 +197,6 @@ contenedor.
 Como mejora complementaria, mover `NoteModel` a la capa de datos, usar `Note` en
 los contratos de dominio y trasladar las reglas de negocio fuera de la pantalla.
 Configurar `get_it` por sí solo no corrige esos límites arquitectónicos.
-
-El guion y la propuesta completa están en [IDEA_PROYECTO.md](IDEA_PROYECTO.md).
 
 ## Pruebas y análisis
 
